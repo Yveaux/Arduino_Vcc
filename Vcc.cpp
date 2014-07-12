@@ -66,10 +66,10 @@ float Vcc::Read_Volts(void)
   return vcc;
 }
 
-float Vcc::Read_Perc(const float expected, const boolean clip)
+float Vcc::Read_Perc(const float range_min, const float range_max, const boolean clip)
 {
   // Read Vcc and convert to percentage
-  float perc = 100.0 * Read_Volts() / expected;
+  float perc = 100.0 * (Read_Volts()-range_min) / (range_max-range_min);
   // Clip to [0..100]% range, when requested.
   if (clip)
     perc = constrain(perc, 0.0, 100.0);
