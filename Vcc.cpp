@@ -58,7 +58,7 @@ float Vcc::Read_Volts(void)
   // Result is now stored in ADC.
   
   // Calculate Vcc (in V)
-  float vcc = 1.1*1023.0 / ADC;
+  float vcc = 1.1*1024.0 / ADC;
 
   // Apply compensation
   vcc *= m_correction;
