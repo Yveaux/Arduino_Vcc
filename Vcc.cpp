@@ -38,7 +38,7 @@ Vcc::Vcc( const float correction )
 #define ADMUX_VCCWRT1V1 (_BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1))
 #endif  
 
-float Vcc::Read_Volts(void)
+uint16_t Vcc::Read_mVolts(void)
 {
   // Read 1.1V reference against AVcc
   // set the reference to Vcc and the measurement to the internal 1.1V reference
@@ -58,12 +58,17 @@ float Vcc::Read_Volts(void)
   // Result is now stored in ADC.
   
   // Calculate Vcc (in V)
-  float vcc = 1.1*1023.0 / ADC;
+  uint32_t vcc = 1100 * 1024.0 / ADC;
 
   // Apply compensation
   vcc *= m_correction;
 
   return vcc;
+}
+
+float Vcc::Read_Volts(void)
+{
+  return Read_mVolts() / 1000.0;
 }
 
 float Vcc::Read_Perc(const float range_min, const float range_max, const boolean clip)
