@@ -68,7 +68,7 @@ uint16_t Vcc::Read_mVolts(void)
 
 float Vcc::Read_Volts(void)
 {
-  return Read_mVolts / 1000.0;
+  return Read_mVolts() / 1000.0;
 }
 
 float Vcc::Read_Perc(const float range_min, const float range_max, const boolean clip)
