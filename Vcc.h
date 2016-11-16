@@ -45,6 +45,12 @@ class Vcc
      */
     float Read_Volts(void);
 
+		/**
+		 * @brief Read milli volts
+		 * @return Current Vcc level in mV<
+		 */
+		uint16_t Vcc::Read_mVolts(void);
+
     /**
      * Retrieve current Vcc level. The total voltage range shall be passed
      * as low/high bound. For e.g. an alkaline AA battery this range can be set
