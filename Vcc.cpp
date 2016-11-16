@@ -58,10 +58,10 @@ uint16_t Vcc::Read_mVolts(void)
   // Result is now stored in ADC.
   
   // Calculate Vcc (in V)
-  float vcc = 1100 * 1024.0 / ADC;
+  uint32_t vcc = 1100 * 1024.0 / ADC;
 
   // Apply compensation
-  vcc *= m_correction * 1000;
+  vcc *= m_correction;
 
   return vcc;
 }
