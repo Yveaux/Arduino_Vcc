@@ -44,6 +44,10 @@ class Vcc
      * @return Current Vcc level, in Volts.
      */
     float Read_Volts(void);
+    /**
+     * return the current adc value by int
+     */
+    int Read_ADC(void);
 
     /**
      * Retrieve current Vcc level. The total voltage range shall be passed

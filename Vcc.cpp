@@ -76,3 +76,22 @@ float Vcc::Read_Perc(const float range_min, const float range_max, const boolean
 
   return perc;
 }
+
+int Vcc::Read_ADC(void)
+{
+  // Read 1.1V reference against AVcc
+  // set the reference to Vcc and the measurement to the internal 1.1V reference
+  if (ADMUX != ADMUX_VCCWRT1V1)
+  {
+    ADMUX = ADMUX_VCCWRT1V1;
+
+    // Bandgap reference start-up time: max 70us
+    // Wait for Vref to settle.
+    delayMicroseconds(350); 
+  }
+  
+  // Start conversion and wait for it to finish.
+  ADCSRA |= _BV(ADSC);
+  while (bit_is_set(ADCSRA,ADSC)) {};
+  return ADC;
+}
