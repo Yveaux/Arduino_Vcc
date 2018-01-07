@@ -23,6 +23,9 @@
 
 #include "Vcc.h"
 
+//time to get the averge adc value
+#define AVER_NUM 20
+
 Vcc::Vcc( const float correction )
   : m_correction(correction)
 {
@@ -94,4 +97,24 @@ int Vcc::Read_ADC(void)
   ADCSRA |= _BV(ADSC);
   while (bit_is_set(ADCSRA,ADSC)) {};
   return ADC;
+}
+
+int Vcc::Read_ADC(int num)
+{
+  static int  Vcc_int[AVER_NUM]={0};
+  static int k = 0; 
+  static int sum = 0;
+  if (num > AVER_NUM || num <0)
+    return -1;
+
+  sum -= Vcc_int[k];
+  Vcc_int[k++] = Read_ADC();
+  sum += Vcc_int[k-1];
+
+  if (k>num-1)
+  {
+    k = 0;
+  }
+
+  return sum/num;
 }

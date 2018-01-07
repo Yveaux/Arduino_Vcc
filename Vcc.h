@@ -48,6 +48,11 @@ class Vcc
      * return the current adc value by int
      */
     int Read_ADC(void);
+    /**
+    * return the current adc value using digital slide filtering by num times
+    *
+    */
+    int Read_ADC(int num);
 
     /**
      * Retrieve current Vcc level. The total voltage range shall be passed
