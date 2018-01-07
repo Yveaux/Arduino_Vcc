@@ -23,6 +23,9 @@
 
 #include "Vcc.h"
 
+//time to get the averge adc value
+#define AVER_NUM 20
+
 Vcc::Vcc( const float correction )
   : m_correction(correction)
 {
@@ -75,4 +78,43 @@ float Vcc::Read_Perc(const float range_min, const float range_max, const boolean
     perc = constrain(perc, 0.0, 100.0);
 
   return perc;
+}
+
+int Vcc::Read_ADC(void)
+{
+  // Read 1.1V reference against AVcc
+  // set the reference to Vcc and the measurement to the internal 1.1V reference
+  if (ADMUX != ADMUX_VCCWRT1V1)
+  {
+    ADMUX = ADMUX_VCCWRT1V1;
+
+    // Bandgap reference start-up time: max 70us
+    // Wait for Vref to settle.
+    delayMicroseconds(350); 
+  }
+  
+  // Start conversion and wait for it to finish.
+  ADCSRA |= _BV(ADSC);
+  while (bit_is_set(ADCSRA,ADSC)) {};
+  return ADC;
+}
+
+int Vcc::Read_ADC(int num)
+{
+  static int  Vcc_int[AVER_NUM]={0};
+  static int k = 0; 
+  static int sum = 0;
+  if (num > AVER_NUM || num <0)
+    return -1;
+
+  sum -= Vcc_int[k];
+  Vcc_int[k++] = Read_ADC();
+  sum += Vcc_int[k-1];
+
+  if (k>num-1)
+  {
+    k = 0;
+  }
+
+  return sum/num;
 }
