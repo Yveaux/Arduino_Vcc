@@ -63,6 +63,9 @@ float Vcc::Read_Volts(void)
   // Apply compensation
   vcc *= m_correction;
 
+  //to fix lowpower drain, ADMUX is changed again.
+  ADMUX = _BV(REFS1); //fixes readVcc current drain in lowPower
+
   return vcc;
 }
 
